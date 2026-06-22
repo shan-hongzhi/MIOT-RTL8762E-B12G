@@ -1,0 +1,75 @@
+include armv6-m/Make.defs
+
+# arch/arm/src/bee
+
+CHIP_CSRCS = rtl876x_os.c rtl876x_irq.c rtl876x_boot.c
+
+CHIP_CSRCS += rtl876x_uart.c rtl876x_rcc.c
+CHIP_CSRCS += rtl876x_nvic.c rtl876x_pinmux.c
+
+CHIP_CSRCS += rtl_serial.c rtl876x_gdma.c
+
+ifeq ($(CONFIG_RTL876x_I2C),y)
+CHIP_CSRCS += rtl_i2c.c
+endif
+
+CHIP_CSRCS += rtl876x_tim.c
+
+CHIP_CSRCS += rtl876x_rtc.c
+
+CHIP_CSRCS += rtl_flash.c
+
+CHIP_CSRCS += rtl876x_enh_tim.c
+
+CHIP_CSRCS += rtl_wdg.c
+
+CHIP_CSRCS += rtl876x_i2c.c
+
+CHIP_CSRCS += rtl876x_gpio.c
+
+CHIP_CSRCS += rtl876x_adc.c
+
+CHIP_CSRCS += rtl876x_pm.c
+
+CHIP_CSRCS += hci_virtual.c rtl_hci.c
+
+CHIP_CSRCS += rtl_aes.c
+
+CHIP_CSRCS += rtl876x_driver_sample.c
+
+ifeq ($(CONFIG_RTL876x_AON_WDG),y)
+CHIP_CSRCS += rtl876x_aon_wdg.c
+endif
+
+HEAD_ASRC = startup_rtl876x_gcc.S
+
+EXTRA_LIBS +=-ladc
+EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/realtek/chips/rtl8762e
+
+CFLAGS += -I$(TOPDIR)/../vendor/realtek/chips/rtl8762e/include/
+
+ifeq ($(CONFIG_MIBLE_SDK),y)
+    ifeq ($(CONFIG_MIBLE_STANDARD),y)
+        ifeq ($(CONFIG_MIBLE_SDK_LOG),y)
+        EXTRA_LIBS +=-lstandard_auth_vela_rtl8762e_debug
+        else
+        EXTRA_LIBS +=-lstandard_auth_vela_rtl8762e
+        endif
+        EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/mijia_ble_standard/src
+    else
+        ifeq ($(CONFIG_MIBLE_SDK_LOG),y)
+        EXTRA_LIBS +=-lmesh_auth_vela_rtl8762e_debug
+        else
+        EXTRA_LIBS +=-lmesh_auth_vela_rtl8762e
+        endif
+        EXTRA_LIBPATHS += -L $(TOPDIR)/../vendor/xiaomi/mijia_ble_mesh/src
+    endif
+endif
+
+ifeq ($(CONFIG_BT),y)
+EXTRA_LIBS +=-lzblue
+EXTRA_LIBPATHS += -L $(TOPDIR)/../external/zblue/zblue/lib
+endif
+
+CFLAGS += -Wno-attributes
+

@@ -1,0 +1,17 @@
+.depend
+Make.dep
+*.o
+*.d
+*.i
+*~
+.swp
+.*.swp
+core
+.gdbinit
+cscope.out
+/.context
+/.config
+/.depend
+/*.lib
+.kconfig
+/Kconfig

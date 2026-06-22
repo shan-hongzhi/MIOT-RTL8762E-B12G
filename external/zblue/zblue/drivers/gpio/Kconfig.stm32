@@ -1,0 +1,10 @@
+# STM32 GPIO configuration
+
+# Copyright (c) 2016 Open-RnD Sp. z o.o.
+# SPDX-License-Identifier: Apache-2.0
+
+config GPIO_STM32
+	bool "GPIO Driver for STM32 family of MCUs"
+	depends on SOC_FAMILY_STM32
+	help
+	  Enable GPIO driver for STM32 line of MCUs

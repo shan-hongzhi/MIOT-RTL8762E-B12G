@@ -1,0 +1,379 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+if ARCH_CHIP_CUSTOM
+
+comment "RTL876x Configuration Options"
+
+choice
+	prompt "RTL876x Chip Selection"
+	default ARCH_CHIP_RTL876x
+
+config ARCH_CHIP_RTL876x
+	bool "RTL876x"
+	select ARCH_CORTEXM0
+
+endchoice
+
+config RTL876x_NR_IRQS
+	int "Interrupt Number"
+	default 32
+
+menuconfig RTL876x_CACHE
+	bool "RTL876x cache support"
+	default n
+
+menuconfig RTL876x_BT
+	bool "RTL876x bt support"
+	default y if BT
+
+
+if RTL876x_BT
+
+config RTL876x_BT_DBG
+	bool "RTL876x bt debug"
+	default n
+endif
+
+menuconfig RTL876x_AES
+	bool "RTL876x AES128 support"
+	default y if BT
+
+menuconfig RTL876x_UART
+	bool "RTL876x UART chip support"
+	default n
+
+config RTL876x_I2C
+	bool "RTL876x I2C Master chip support"
+	default n
+        select I2C
+        select I2C_DRIVER
+
+if RTL876x_I2C
+
+config RTL876x_I2C0_MASTER
+	bool "RTL876x I2C0 Master"
+	default n
+
+if RTL876x_I2C0_MASTER
+
+config RTL876x_I2C0_MASTER_SDA_PIN
+	int "RTL876x I2C0 Master SDA pin"
+	default 1
+	---help---
+		RTL876x I2C0 SDA pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P0_1
+
+config RTL876x_I2C0_MASTER_SCL_PIN
+	int "RTL876x I2C0 Master SCL pin"
+	default 2
+	---help---
+		RTL876x I2C0 SCL pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P0_2
+
+config RTL876x_I2C0_MASTER_DMA_TX_CH
+        int "RTL876x I2C0 DMA Tx Channel"
+	default 0
+	range 0 3
+
+config RTL876x_I2C0_MASTER_DMA_RX_CH
+        int "RTL876x I2C0 DMA Rx Channel"
+	default 1
+	range 0 3
+
+endif
+
+config RTL876x_I2C_TRANSFER_TIMEOUT
+        int "RTL876x I2C Transfer Timeout(seconds)"
+	default 5
+
+endif
+
+if RTL876x_UART
+
+config RTL876x_UART0
+	bool "RTL876x UART0"
+	default n
+
+if RTL876x_UART0
+
+config RTL876x_UART0_CONSOLE
+	bool "RTL876x UART0 CONSOLE"
+	default n
+	select SERIAL_CONSOLE
+
+config RTL876x_UART0_TX_PIN
+	int "RTL876x UART0 tx pin"
+	default 24
+	---help---
+		RTL876x UART0 tx pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P3_0
+
+config RTL876x_UART0_RX_PIN
+	int "RTL876x UART0 rx pin"
+	default 25
+	---help---
+		RTL876x UART0 rx pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P3_1
+
+menuconfig RTL876x_UART0_RXDMA
+	bool "RTL876x UART rx dma chip support"
+	default n
+        select SERIAL_RXDMA
+
+if RTL876x_UART0_RXDMA
+
+config RTL876x_UART0_RXDMA_CH
+    int "RTL876x UART0 rx dma channel number"
+	default 0
+
+config RTL876x_UART0_DMA_RXBUFSIZE
+    int "RTL876x UART0 rx dma buffer size"
+	default 1024
+endif # RTL876x_UART0_RXDMA
+
+menuconfig RTL876x_UART0_TXDMA
+	bool "RTL876x UART tx dma chip support"
+	default n
+        select SERIAL_TXDMA
+
+if RTL876x_UART0_TXDMA
+
+config RTL876x_UART0_TXDMA_CH
+    int "RTL876x UART0 tx dma channel number"
+	default 1
+
+config RTL876x_UART0_DMA_TXBUFSIZE
+    int "RTL876x UART0 tx dma buffer size"
+	default 1024
+endif # RTL876x_UART0_TXDMA
+
+config RTL876x_UART0_RXBUFSIZE
+    int "RTL876x UART0 rxbuffersize"
+	default 255
+
+config RTL876x_UART0_TXBUFSIZE
+    int "RTL876x UART0 txbuffersize"
+	default 255
+
+config RTL876x_UART0_BAUD
+	int "RTL876x UART0 BAUD"
+	default 115200
+	---help---
+		RTL876x UART0 baud rate, you can choose 9600, 19200, 115200,
+		230400, 256000, 384000, 460800, 921600,
+		1000000, 2000000, 3000000.  Default: 115200
+
+config RTL876x_UART0_PARITY
+	int "RTL876x UART0 parity"
+	default 0
+	---help---
+		RTL876x UART0 parity.  0=None, 1=Odd, 2=Even.  Default: None
+
+config RTL876x_UART0_BITS
+	int "RTL876x UART0 number of bits"
+	default 8
+	---help---
+		RTL876x UART0 number of bits, only choose 7bit and 8bit. Default: 8bit
+
+config RTL876x_UART0_2STOP
+	int "RTL876x UART0 two stop bits"
+	default 1
+	---help---
+		1=One stop bit, 2=Two stop bits.  Default: 1=One stop bit
+
+endif # RTL876x_UART0
+
+config RTL876x_UART1
+	bool "RTL876x UART1"
+	default n
+
+if RTL876x_UART1
+
+config RTL876x_UART1_CONSOLE
+	bool "RTL876x UART1 CONSOLE"
+	default n
+	select SERIAL_CONSOLE
+
+config RTL876x_UART1_TX_PIN
+	int "RTL876x UART1 tx pin"
+	default 26
+	---help---
+		RTL876x UART1 tx pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P3_2
+
+config RTL876x_UART1_RX_PIN
+	int "RTL876x UART1 rx pin"
+	default 27
+	---help---
+		RTL876x UART1 rx pin, you can choose P0_0~P0_7, P1_0~P1_7,
+		P2_0~P2_7, P3_0~P3_7, P4_0~P4_3, H_0, P5_1~P5_2.  default P3_3
+
+config RTL876x_UART1_FLOWCONTROL
+	bool "RTL876x UART1 FlowControl"
+	default n
+
+if RTL876x_UART1_FLOWCONTROL
+config RTL876x_UART1_CTS_PIN
+	int "RTL876x UART1 CTS pin"
+	default 28
+	---help---
+		None
+
+config RTL876x_UART1_RTS_PIN
+	int "RTL876x UART1 RTS pin"
+	default 29
+	---help---
+		None
+endif
+
+menuconfig RTL876x_UART1_RXDMA
+	bool "RTL876x UART rx dma chip support"
+	default n
+        select SERIAL_RXDMA
+
+if RTL876x_UART1_RXDMA
+
+config RTL876x_UART1_RXDMA_CH
+    int "RTL876x UART1 rx dma channel number"
+	default 0
+
+config RTL876x_UART1_DMA_RXBUFSIZE
+    int "RTL876x UART1 rx dma buffer size"
+	default 1024
+endif # RTL876x_UART1_RXDMA
+
+menuconfig RTL876x_UART1_TXDMA
+	bool "RTL876x UART tx dma chip support"
+	default n
+        select SERIAL_TXDMA
+
+if RTL876x_UART1_TXDMA
+
+config RTL876x_UART1_TXDMA_CH
+    int "RTL876x UART1 tx dma channel number"
+	default 1
+
+config RTL876x_UART1_DMA_TXBUFSIZE
+    int "RTL876x UART1 tx dma buffer size"
+	default 1024
+endif # RTL876x_UART1_TXDMA
+
+config RTL876x_UART1_RXBUFSIZE
+    int "RTL876x UART1 rxbuffersize"
+	default 255
+
+config RTL876x_UART1_TXBUFSIZE
+    int "RTL876x UART1 txbuffersize"
+	default 255
+
+config RTL876x_UART1_BAUD
+	int "RTL876x UART1 BAUD"
+	default 115200
+	---help---
+		RTL876x UART0 baud rate, you can choose 9600, 19200, 115200,
+		230400, 256000, 384000, 460800, 921600,
+		1000000, 2000000, 3000000.  Default: 115200
+
+config RTL876x_UART1_PARITY
+	int "RTL876x UART1 parity"
+	default 0
+	---help---
+		RTL876x UART1 parity.  0=None, 1=Odd, 2=Even.  Default: None
+
+config RTL876x_UART1_BITS
+	int "RTL876x UART1 number of bits"
+	default 8
+	---help---
+		RTL876x UART0 number of bits, only choose 7bit and 8bit. Default: 8bit
+
+config RTL876x_UART1_2STOP
+	int "RTL876x UART1 two stop bits"
+	default 1
+	---help---
+		1=One stop bit, 2=Two stop bits.  Default: 1=One stop bit
+
+endif # RTL876x_UART1
+
+endif # RTL876x_UART
+
+menuconfig RTL876x_FLASH
+	bool "RTL876x flash chip support"
+	default n
+
+if RTL876x_FLASH
+
+config RTL876X_FLASH_BLKSIZE
+	int "RTL876x FLASH block size"
+	default 512
+
+config RTL876x_MTD_OFFSET
+        int "RTL876x mtd offset"
+        default 503808
+        ---help---
+                RTL876x mtd offset, in decimal form, default 503808, which means 0x0087b000.
+
+config RTL876x_MTD_SIZE
+        int "RTL876x mtd size"
+        default 12288
+        ---help---
+                RTL876x mtd size, in decimal form, default 12288, which means 12k.
+
+endif # RTL876x_FLASH
+
+menuconfig RTL876x_AON_WDG
+	bool "RTL876x wdg(aon) chip support"
+	default n
+
+if RTL876x_AON_WDG
+
+config RTL876x_AON_WDG_TIMEOUT_SECONDS
+	int "RTL876x wdg interval(s)"
+	default 10
+
+endif # RTL876x_WDG
+
+menuconfig RTL876x_WDG
+	bool "RTL876x wdg chip support"
+	default n
+
+if RTL876x_WDG
+
+config RTL876x_WDG_INTERVAL_MS
+	int "RTL876x wdg interval"
+	default 1000
+
+endif # RTL876x_WDG
+
+
+menuconfig RTL876x_DRIVER_SAMPLE
+	bool "RTL876x driver sample"
+	default n
+
+if RTL876x_DRIVER_SAMPLE
+
+config RTL876x_DRIVER_SAMPLE_GPIO
+	bool "RTL876x gpio sample"
+	default n
+
+config RTL876x_DRIVER_SAMPLE_TIM
+	bool "RTL876x tim sample"
+	default n
+
+config RTL876x_DRIVER_SAMPLE_PWM
+	bool "RTL876x pwm sample"
+	default n
+
+config RTL876x_DRIVER_SAMPLE_RTC
+	bool "RTL876x rtc sample"
+	default n
+
+config RTL876x_DRIVER_SAMPLE_ADC
+	bool "RTL876x adc sample"
+	default n
+
+endif # RTL876x_DRIVER_SAMPLE
+
+endif # ARCH_CHIP_CUSTOM

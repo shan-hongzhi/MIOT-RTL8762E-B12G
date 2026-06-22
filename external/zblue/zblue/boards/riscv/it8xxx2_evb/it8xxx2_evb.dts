@@ -1,0 +1,149 @@
+/*
+ * Copyright (c) ITE, All Rights Reserved
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <it8xxx2.dtsi>
+#include <it8xxx2-alts-map.dtsi>
+
+/ {
+	model = "IT8XXX2 EV-Board";
+	compatible = "riscv,it8xxx2-evb";
+
+	aliases {
+		i2c-0 = &i2c0;
+		peci-0 = &peci0;
+	};
+
+	chosen {
+		zephyr,console = &uart1;
+		zephyr,shell-uart = &uart1;
+		zephyr,bt-uart = &uart2;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,flash-controller = &flashctrl;
+		zephyr,code-partition = &slot0_partition;
+		zephyr,keyboard-scan = &kscan0;
+	};
+
+	aliases {
+		led0 = &led0;
+		kscan0 = &kscan0;
+		watchdog0 = &twd0;
+		pwm-0 = &pwm0;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpioc 0 GPIO_ACTIVE_HIGH>;
+			label = "Green LED";
+		};
+	};
+};
+&adc0 {
+	status = "okay";
+};
+/* voltage comparator for test */
+&vcmp0 {
+	status = "okay";
+	scan-period = <IT8XXX2_VCMP_SCAN_PERIOD_600US>;
+	comparison = <IT8XXX2_VCMP_GREATER>;
+	threshold-mv = <2000>;
+	io-channels = <&adc0 3>;
+};
+&i2c0 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&i2c1 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&i2c2 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&i2c3 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&i2c4 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&i2c5 {
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_STANDARD>;
+};
+&uart1 {
+	status = "okay";
+	current-speed = <115200>;
+	clock-frequency = <1804800>;
+};
+&uart2 {
+	status = "okay";
+	current-speed = <460800>;
+	clock-frequency = <1804800>;
+};
+&ite_uart1_wrapper {
+	status = "okay";
+};
+&ite_uart2_wrapper {
+	status = "okay";
+};
+/* pwm for test */
+&pwm0 {
+	status = "okay";
+	prescaler-cx = <PWM_PRESCALER_C6>;
+	/*
+	 * If we need pwm output in ITE chip power saving mode,
+	 * then we should set frequency <=324Hz.
+	 */
+	pwm-output-frequency = <324>;
+};
+/* pwm for fan */
+&pwm7 {
+	status = "okay";
+	prescaler-cx = <PWM_PRESCALER_C4>;
+	pwm-output-frequency = <30000>;
+};
+/* fan tachometer sensor */
+&tach0 {
+	status = "okay";
+	channel = <IT8XXX2_TACH_CHANNEL_A>;
+	pulses-per-round = <2>;
+};
+&kscan0 {
+	status = "okay";
+};
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 0x20000>;
+		};
+		slot0_partition: partition@20000 {
+			label = "image-0";
+			reg = <0x00020000 0x20000>;
+		};
+		slot1_partition: partition@40000 {
+			label = "image-1";
+			reg = <0x00040000 0x10000>;
+		};
+		scratch_partition: partition@50000 {
+			label = "image-scratch";
+			reg = <0x00050000 0x10000>;
+		};
+		storage_partition: partition@60000 {
+			label = "storage";
+			reg = <0x00060000 0x20000>;
+		};
+	};
+};

@@ -1,0 +1,47 @@
+﻿V1.4.1 Date: 20240320
+1. IO Driver: 
+    - NEW: add spi 3 wire sample
+
+V1.4.0 Date: 20221215
+1. Platform:
+   - NEW: Prevent Sector 0 (FT Data) from unexpected programming
+   - NEW: add API for enter powerdown directly
+   - NEW: store and restore GPIO->INTBOTHEDGE when enter and exit dlps
+   - NEW: support modify otp item timer_task_stack_size
+   - NEW: support modify otp item to increase BT FTL storage space
+   - NEW: Disable write MAC or frequency offset function to eFuse in Bee3
+   - CHG: move srand function to main
+   - CHG: Adjust Flash range to protect Sector 0 and enable Chip Erase
+   - CHG: exchange I2S0 TX and RX IRQn
+   - CHG: fix NVIC priority register issue in rtl876x_io_dlps.c
+
+2. IO Driver:
+   - NEW: Add API to check debounce wakeup status in the Pad driver
+   - NEW: add 48k sample rate definition in codec driver
+   - NEW: add the function of ENHTIM_PWMDZBypassCmd
+   - CHG: Fix pinmux driver bug
+
+3. Upperstack
+   - NEW: Add api for app to set LTK
+   - CHG: Modify code to save local address
+   - CHG: Delete redundant code of LE Connection Update cmd
+
+V1.3.0 Date: 20221115
+1. Support the GCC compiler
+    Reference document: sdk\doc\CN\RTL8762E How to create a GCC Project 
+
+V1.2.0 Date: 20220602
+1. Platform:
+   - NEW: add log baudrate config method
+   - CHG: Update md5.exe to fix wrong checksum
+   - CHG: Refine report image version flow and dfu error code
+   - CHG: Modify memory layout when use set_dataram_to_shutdown
+   - CHG: Modify trace task hang, hardfault and timer in system_trace_lib
+   - CHG: Fix realloc error when use freertos
+   - CHG: Modify SHARE_CACHE_RAM_SECTION in app_section.h
+
+2. IO Driver:
+   - CHG: Optimize GDMA DISABLE process
+
+3. Documents
+   - CHG: Fix some documents errors and optimizations

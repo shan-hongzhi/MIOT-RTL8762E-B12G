@@ -1,0 +1,14 @@
+sample:
+  name: SocketCAN sample
+common:
+  tags: net socket can
+  filter: dt_chosen_enabled("zephyr,canbus")
+  depends_on: can
+  harness: can
+tests:
+  sample.net.sockets.can.one_socket:
+    extra_configs:
+      - CONFIG_NET_SOCKETS_CAN_RECEIVERS=1
+  sample.net.sockets.can.two_sockets:
+    extra_configs:
+      - CONFIG_NET_SOCKETS_CAN_RECEIVERS=2

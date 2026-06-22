@@ -1,0 +1,13 @@
+sample:
+  name: ISO-TP lib sample
+tests:
+  sample.subsys.canbus.isotp:
+    tags: can
+    depends_on: can
+    filter: dt_chosen_enabled("zephyr,canbus")
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "(.*)Got 248 bytes in total"
+      fixture: fixture_can_two_boards

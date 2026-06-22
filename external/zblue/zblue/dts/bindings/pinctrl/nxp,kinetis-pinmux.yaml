@@ -1,0 +1,14 @@
+description: Kinetis pinmux node
+
+compatible: "nxp,kinetis-pinmux"
+
+include:
+  - name: base.yaml
+  - name: pincfg-node.yaml
+
+properties:
+    reg:
+      required: true
+
+    clocks:
+      required: true

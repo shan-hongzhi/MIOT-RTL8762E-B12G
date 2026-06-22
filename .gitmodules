@@ -1,0 +1,3 @@
+[submodule "vendor/xiaomi/mijia_ble_mesh"]
+	path = vendor/xiaomi/mijia_ble_mesh
+	url = git@partner-gitlab.mioffice.cn:miot/bsp/mijia_ble_mesh.git
