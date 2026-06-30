@@ -1,0 +1,83 @@
+
+config MIBLE_SDK
+	bool "Enable mijia Mesh App"
+	default n
+	help
+	  This option enables support for mijia mesh app
+
+config MIBLE_STANDARD
+	bool "Enable mijia standard auth App"
+	default n
+	help
+	  This option enables support for mijia standard app
+
+config MIBLE_PSK
+	bool "Enable mijia psk auth App"
+	default n
+	help
+	  This option enables support for mijia psk app
+
+config MIBLE_HAVE_MSC
+        bool
+        default n
+
+choice
+	prompt "Mijia MSC"
+	default MIBLE_MSC_NONE
+
+config MIBLE_MSC_NONE
+	bool "MSC None"
+	help
+         None
+
+config MIBLE_MSC_MJA1
+	bool "MSC MJA1"
+	depends on I2C
+        select MIBLE_HAVE_MSC
+	help
+         None
+
+config MIBLE_MSC_MJA2
+	bool "MSC MJA2"
+	depends on I2C
+        select MIBLE_HAVE_MSC
+	help
+         None
+
+endchoice
+
+config MIBLE_SDK_STACK_SIZE
+	int "Stack size for mijia Mesh App"
+	default 4096
+	depends on MIBLE_SDK
+
+config MIBLE_SDK_USE_SRC
+	bool "Use source code for mijia_ble_libs"
+	default n
+	depends on MIBLE_SDK
+	help
+	  This option used for ar mijia_ble_libs or used as source mode.
+
+config MIBLE_SDK_LOG
+	bool "Enable log debug function"
+	default n
+	depends on MIBLE_SDK
+
+config MIBLE_MESH_MULT_SUB
+	bool "Enable muti group sub func"
+	default n
+	depends on MIBLE_SDK
+
+config MIBLE_MESH_CONFIG
+	bool "Enable vendor config func"
+	default n
+	depends on MIBLE_SDK
+
+config MIBLE_USE_MCU_OTA
+	bool "Enable mcu ota function"
+	default n
+	depends on MIBLE_SDK
+
+config MIBLE_BOARD_NAME
+	string "mijia ble mesh board name"
+	default "rtl8762e"
